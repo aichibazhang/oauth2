@@ -26,15 +26,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created on 2018/1/15 0015.
- *
- * @author zlf
- * @email i@merryyou.cn
- * @since 1.0
+ * ✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈
+ * 创建时间： 2019/3/25 10:37
+ * Talk is cheap , show me the code
+ * 作者:  HanJiaXuan & 18735123416@163.com
+ * 方法说明：
+ * {@link #
+ * ✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈
  */
 @Configuration
 @EnableAuthorizationServer
-public class MerryyouAuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
+public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
     @Autowired
     private AuthenticationManager authenticationManager;

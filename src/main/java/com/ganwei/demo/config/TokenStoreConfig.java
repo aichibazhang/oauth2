@@ -1,8 +1,8 @@
 package com.ganwei.demo.config;
 
-import com.ganwei.demo.properties.OAuth2Properties;
 import com.ganwei.demo.security.jwt.JwtTokenEnhancer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -32,10 +32,11 @@ public class TokenStoreConfig {
 
     /**
      * 用于存放token
+     *
      * @return
      */
     @Bean
-    @ConditionalOnProperty(prefix = "merryyou.security.oauth2", name = "storeType", havingValue = "redis")
+    @ConditionalOnProperty(prefix = "skinny.security.oauth2", name = "storeType", havingValue = "redis")
     public TokenStore redisTokenStore() {
         return new RedisTokenStore(redisConnectionFactory);
     }
@@ -44,39 +45,42 @@ public class TokenStoreConfig {
      * jwt TOKEN配置信息
      */
     @Configuration
-    @ConditionalOnProperty(prefix = "merryyou.security.oauth2", name = "storeType", havingValue = "jwt", matchIfMissing = true)
-    public static class JwtTokenCofnig{
+    @ConditionalOnProperty(prefix = "skinny.security.oauth2", name = "storeType", havingValue = "jwt", matchIfMissing = true)
+    public static class JwtTokenCofnig {
+        @Value("${skinny.security.oauth2.jwtSigningKey}")
+        private String jwtSignKey;
 
-        @Autowired
-        private OAuth2Properties oAuth2Properties;
 
         /**
          * 使用jwtTokenStore存储token
+         *
          * @return
          */
         @Bean
-        public TokenStore jwtTokenStore(){
+        public TokenStore jwtTokenStore() {
             return new JwtTokenStore(jwtAccessTokenConverter());
         }
 
         /**
          * 用于生成jwt
+         *
          * @return
          */
         @Bean
-        public JwtAccessTokenConverter jwtAccessTokenConverter(){
+        public JwtAccessTokenConverter jwtAccessTokenConverter() {
             JwtAccessTokenConverter accessTokenConverter = new JwtAccessTokenConverter();
-            accessTokenConverter.setSigningKey(oAuth2Properties.getJwtSigningKey());//生成签名的key
+            accessTokenConverter.setSigningKey(jwtSignKey);
             return accessTokenConverter;
         }
 
         /**
          * 用于扩展JWT
+         *
          * @return
          */
         @Bean
         @ConditionalOnMissingBean(name = "jwtTokenEnhancer")
-        public TokenEnhancer jwtTokenEnhancer(){
+        public TokenEnhancer jwtTokenEnhancer() {
             return new JwtTokenEnhancer();
         }
 

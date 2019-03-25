@@ -1,4 +1,4 @@
-package com.ganwei.demo.security;
+package com.ganwei.demo.service;
 
 import com.ganwei.demo.entity.MenuVo;
 import com.ganwei.demo.entity.RoleVo;

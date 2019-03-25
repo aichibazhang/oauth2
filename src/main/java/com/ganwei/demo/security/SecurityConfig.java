@@ -13,12 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-/**
- * Created on 2018/1/19.
- *
- * @author zlf
- * @since 1.0
- */
+
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired

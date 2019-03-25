@@ -17,16 +17,10 @@ spring:
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
-merryyou:
+skinny:
   security:
     oauth2:
       storeType: jwt #或者jwt
-      jwtSigningKey: merryyou
-      clients[0]:
-        clientId: merryyou
-        clientSecret: merryyou
-      clients[1]:
-        clientId: merryyou1
-        clientSecret: merryyou1
+      jwtSigningKey: skinny
 
 
