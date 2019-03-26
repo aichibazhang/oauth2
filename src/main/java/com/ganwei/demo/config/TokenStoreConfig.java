@@ -14,13 +14,6 @@ import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenCo
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
-/**
- * Created on 2018/1/21 0021.
- *
- * @author zlf
- * @email i@merryyou.cn
- * @since 1.0
- */
 @Configuration
 public class TokenStoreConfig {
     /**

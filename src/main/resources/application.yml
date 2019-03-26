@@ -20,7 +20,7 @@ spring:
 skinny:
   security:
     oauth2:
-      storeType: jwt #或者jwt
+      storeType: redis
       jwtSigningKey: skinny
 
 
