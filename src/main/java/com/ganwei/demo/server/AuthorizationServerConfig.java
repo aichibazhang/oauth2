@@ -1,11 +1,11 @@
 package com.ganwei.demo.server;
 
+import com.ganwei.demo.service.UserDetailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
@@ -15,6 +15,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
+import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
@@ -30,7 +31,7 @@ import java.util.List;
  * 创建时间： 2019/3/25 10:37
  * Talk is cheap , show me the code
  * 作者:  HanJiaXuan & 18735123416@163.com
- * 方法说明：
+ * 方法说明：授权服务器配置
  * {@link #
  * ✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈
  */
@@ -42,7 +43,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private UserDetailsService userDetailsService;
+    private UserDetailServiceImpl userDetailsService;
     @Autowired
     private DataSource dataSource;
 
@@ -54,7 +55,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Autowired(required = false)
     private TokenEnhancer jwtTokenEnhancer;
-
+    @Autowired
+    private WebResponseExceptionTranslator customWebResponseExceptionTranslator;
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
@@ -70,11 +72,12 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
             endpoints.tokenEnhancer(tokenEnhancerChain)
                     .accessTokenConverter(jwtAccessTokenConverter);
         }
+        endpoints.exceptionTranslator(customWebResponseExceptionTranslator);
     }
 
     @Bean
     public ClientDetailsService clientDetails() {
-        JdbcClientDetailsService jdbcClientDetailsService=new JdbcClientDetailsService(dataSource);
+        JdbcClientDetailsService jdbcClientDetailsService = new JdbcClientDetailsService(dataSource);
         jdbcClientDetailsService.setPasswordEncoder(new BCryptPasswordEncoder());
         return jdbcClientDetailsService;
     }
@@ -113,9 +116,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-        security
-                .allowFormAuthenticationForClients()
-                .checkTokenAccess("permitAll()")
-        .passwordEncoder(NoOpPasswordEncoder.getInstance());
+        security.tokenKeyAccess("permitAll()");
+        security.checkTokenAccess("isAuthenticated()");
+        security.allowFormAuthenticationForClients();
+        security.passwordEncoder(NoOpPasswordEncoder.getInstance());
     }
 }
+

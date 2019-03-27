@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.HashSet;
@@ -25,8 +26,8 @@ import java.util.List;
 import java.util.Set;
 
 
-@Component
-public class UserDetailService implements UserDetailsService {
+@Service
+public class UserDetailServiceImpl implements UserDetailsService {
     @Resource
     private UserService userService;
     @Resource

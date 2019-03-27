@@ -1,5 +1,6 @@
 package com.ganwei.demo.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -24,12 +25,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Slf4j
 public class OauthController {
 
-    @RequestMapping(value = "/login",method = RequestMethod.POST)
-    @ResponseBody
-    private User login(){
-        SecurityContext ctx = SecurityContextHolder.getContext();
-        Authentication auth = ctx.getAuthentication();
-        User user=(User)auth.getPrincipal();
-        return user;
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @ResponseBody()
+    private JSONObject login(Authentication auth) {
+        User user = (User) auth.getPrincipal();
+        JSONObject object = new com.alibaba.fastjson.JSONObject();
+        object.put("userName", user.getUsername());
+        return object;
     }
 }
